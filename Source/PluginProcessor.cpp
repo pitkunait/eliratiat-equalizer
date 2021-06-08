@@ -203,40 +203,24 @@ void VashEQAudioProcessor::updatePeakFilter(const ChainSettings &chainSettings) 
     updateCoefficients(rightChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
 }
 
-void VashEQAudioProcessor::updateCoefficients(Coefficients &old, const Coefficients &replacements) {
-    *old = *replacements;
-}
-
 void VashEQAudioProcessor::updateLowCutFilters(const ChainSettings &chainSettings) {
-    auto lowCutCoefficients = juce::dsp::FilterDesign<float>::designIIRHighpassHighOrderButterworthMethod(
-            chainSettings.lowCutFreq,
-            getSampleRate(),
-            2 * (chainSettings.lowCutSlope + 1));
-
+    auto lowCutCoefficients = makeLowCutFilter(chainSettings, getSampleRate());
     auto &leftLowCut = leftChain.get<ChainPositions::LowCut>();
     auto &rightLowCut = rightChain.get<ChainPositions::LowCut>();
-
     updateCutFilter(leftLowCut, lowCutCoefficients, chainSettings.lowCutSlope);
     updateCutFilter(rightLowCut, lowCutCoefficients, chainSettings.lowCutSlope);
 }
 
 void VashEQAudioProcessor::updateHighCutFilters(const ChainSettings &chainSettings) {
-    auto highCutCoefficients = juce::dsp::FilterDesign<float>::designIIRLowpassHighOrderButterworthMethod(
-            chainSettings.highCutFreq,
-            getSampleRate(),
-            2 * (chainSettings.highCutSlope + 1));
-
+    auto highCutCoefficients = makeHighCutFilter(chainSettings, getSampleRate());
     auto &leftHighCut = leftChain.get<ChainPositions::HighCut>();
     auto &rightHighCut = rightChain.get<ChainPositions::HighCut>();
-
     updateCutFilter(leftHighCut, highCutCoefficients, chainSettings.highCutSlope);
     updateCutFilter(rightHighCut, highCutCoefficients, chainSettings.highCutSlope);
-
 }
 
 void VashEQAudioProcessor::updateFilters() {
     auto chainSettings = getChainSettings(apvts);
-
     updateLowCutFilters(chainSettings);
     updatePeakFilter(chainSettings);
     updateHighCutFilters(chainSettings);

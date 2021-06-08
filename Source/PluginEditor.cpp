@@ -24,10 +24,20 @@ VashEQAudioProcessorEditor::VashEQAudioProcessorEditor(VashEQAudioProcessor &p)
         addAndMakeVisible(comp);
     }
 
+    const auto &params = audioProcessor.getParameters();
+    for (auto param: params) {
+        param->addListener(this);
+    }
+
+    startTimerHz(60);
     setSize(600, 400);
 }
 
 VashEQAudioProcessorEditor::~VashEQAudioProcessorEditor() {
+    const auto &params = audioProcessor.getParameters();
+    for (auto param: params) {
+        param->removeListener(this);
+    }
 }
 
 //==============================================================================
@@ -128,7 +138,19 @@ void VashEQAudioProcessorEditor::parameterValueChanged(int parameterIndex, float
 
 void VashEQAudioProcessorEditor::timerCallback() {
     if (parameterChanged.compareAndSetBool(false, true)) {
+        auto chainSettings = getChainSettings(audioProcessor.apvts);
+        auto sampleRate = audioProcessor.getSampleRate();
 
+        auto peakCoefficients = makePeakFilter(chainSettings, sampleRate);
+        updateCoefficients(monoChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
+
+        auto lowCutCoefficients = makeLowCutFilter(chainSettings, sampleRate);
+        auto highCutCoefficients = makeHighCutFilter(chainSettings, sampleRate);
+
+        updateCutFilter(monoChain.get<ChainPositions::LowCut>(), lowCutCoefficients, chainSettings.lowCutSlope);
+        updateCutFilter(monoChain.get<ChainPositions::HighCut>(), highCutCoefficients, chainSettings.highCutSlope);
+
+        repaint();
     }
 }
 
