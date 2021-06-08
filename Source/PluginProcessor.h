@@ -107,6 +107,12 @@ private:
 
     static void updateCoefficients(Coefficients &old, const Coefficients &replacements);
 
+    template<int Index, typename ChainType, typename CoefficientType>
+    void update(ChainType &chain, const CoefficientType &coefficients) {
+        updateCoefficients(chain.template get<Index>().coefficients, coefficients[Index]);
+        chain.template setBypassed<Index>(false);
+    }
+
     template<typename ChainType, typename CoefficientType>
     void updateCutFilter(ChainType &chain,
                          const CoefficientType &cutCoefficients,
@@ -118,40 +124,28 @@ private:
         chain.template setBypassed<3>(true);
 
         switch (slope) {
-            case Slope_12: {
-                *chain.template get<0>().coefficients = *cutCoefficients[0];
-                chain.template setBypassed<0>(false);
-                break;
-            }
-            case Slope_24: {
-                *chain.template get<0>().coefficients = *cutCoefficients[0];
-                chain.template setBypassed<0>(false);
-                *chain.template get<1>().coefficients = *cutCoefficients[1];
-                chain.template setBypassed<1>(false);
-                break;
+            case Slope_48: {
+                update<3>(chain, cutCoefficients);
             }
             case Slope_36: {
-                *chain.template get<0>().coefficients = *cutCoefficients[0];
-                chain.template setBypassed<0>(false);
-                *chain.template get<1>().coefficients = *cutCoefficients[1];
-                chain.template setBypassed<1>(false);
-                *chain.template get<2>().coefficients = *cutCoefficients[2];
-                chain.template setBypassed<2>(false);
-                break;
+                update<2>(chain, cutCoefficients);
             }
-            case Slope_48: {
-                *chain.template get<0>().coefficients = *cutCoefficients[0];
-                chain.template setBypassed<0>(false);
-                *chain.template get<1>().coefficients = *cutCoefficients[1];
-                chain.template setBypassed<1>(false);
-                *chain.template get<2>().coefficients = *cutCoefficients[2];
-                chain.template setBypassed<2>(false);
-                *chain.template get<3>().coefficients = *cutCoefficients[3];
-                chain.template setBypassed<3>(false);
-                break;
+            case Slope_24: {
+                update<1>(chain, cutCoefficients);
+            }
+            case Slope_12: {
+                update<0>(chain, cutCoefficients);
             }
         }
     }
+
+    void updateLowCutFilters(const ChainSettings &chainSettings);
+
+    void updateHighCutFilters(const ChainSettings &chainSettings);
+
+    void updateFilters();
+
+
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VashEQAudioProcessor)
