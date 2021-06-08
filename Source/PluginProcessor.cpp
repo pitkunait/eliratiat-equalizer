@@ -157,7 +157,6 @@ bool VashEQAudioProcessor::hasEditor() const {
 
 juce::AudioProcessorEditor *VashEQAudioProcessor::createEditor() {
     return new VashEQAudioProcessorEditor(*this);
-//    return new juce::GenericAudioProcessorEditor(*this);
 }
 
 
