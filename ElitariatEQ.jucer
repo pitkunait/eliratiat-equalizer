@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="MAz3BA" name="VashEQ" projectType="audioplug" useAppConfig="0"
+<JUCERPROJECT id="MAz3BA" name="ElitariatEQ" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              cppLanguageStandard="17" includeBinaryInJuceHeader="1" binaryDataNamespace="BinaryData">
-  <MAINGROUP id="khGWax" name="VashEQ">
+              cppLanguageStandard="17" includeBinaryInJuceHeader="1" binaryDataNamespace="BinaryData"
+              companyName="Elitariat">
+  <MAINGROUP id="khGWax" name="ElitariatEQ">
     <GROUP id="{8E0C8FE1-5FB7-8C02-B7DF-A6B53A976504}" name="Resources">
       <FILE id="KhnYvO" name="jura.png" compile="0" resource="1" file="Resources/jura.png"/>
     </GROUP>
