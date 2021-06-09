@@ -1,11 +1,3 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
-
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
@@ -24,8 +16,7 @@ VashEQAudioProcessor::VashEQAudioProcessor()
 {
 }
 
-VashEQAudioProcessor::~VashEQAudioProcessor() {
-}
+VashEQAudioProcessor::~VashEQAudioProcessor() = default;
 
 //==============================================================================
 const juce::String VashEQAudioProcessor::getName() const {
@@ -84,7 +75,7 @@ void VashEQAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 
-    juce::dsp::ProcessSpec spec;
+    juce::dsp::ProcessSpec spec{};
 
     spec.maximumBlockSize = samplesPerBlock;
     spec.numChannels = 1;
@@ -172,28 +163,6 @@ void VashEQAudioProcessor::setStateInformation(const void *data, int sizeInBytes
         apvts.replaceState(tree);
         updateFilters();
     }
-}
-
-ChainSettings getChainSettings(juce::AudioProcessorValueTreeState &apvts) {
-    ChainSettings settings;
-
-    settings.lowCutFreq = apvts.getRawParameterValue("LowCut Freq")->load();
-    settings.highCutFreq = apvts.getRawParameterValue("HighCut Freq")->load();
-    settings.peakFreq = apvts.getRawParameterValue("Peak Freq")->load();
-    settings.peakGainInDecibels = apvts.getRawParameterValue("Peak Gain")->load();
-    settings.peakQuality = apvts.getRawParameterValue("Peak Quality")->load();
-    settings.lowCutSlope = static_cast<Slope>(apvts.getRawParameterValue("LowCut Slope")->load());
-    settings.highCutSlope = static_cast<Slope>(apvts.getRawParameterValue("HighCut Slope")->load());
-
-    return settings;
-}
-
-Coefficients makePeakFilter(const ChainSettings &chainSettings, double sampleRate) {
-    return juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate,
-                                                               chainSettings.peakFreq,
-                                                               chainSettings.peakQuality,
-                                                               juce::Decibels::decibelsToGain(
-                                                                       chainSettings.peakGainInDecibels));
 }
 
 void VashEQAudioProcessor::updatePeakFilter(const ChainSettings &chainSettings) {

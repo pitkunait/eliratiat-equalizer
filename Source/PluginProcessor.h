@@ -84,6 +84,28 @@ inline auto makeHighCutFilter(const ChainSettings &chainSettings, double sampleR
 }
 
 
+inline ChainSettings getChainSettings(juce::AudioProcessorValueTreeState &apvts) {
+    ChainSettings settings;
+
+    settings.lowCutFreq = apvts.getRawParameterValue("LowCut Freq")->load();
+    settings.highCutFreq = apvts.getRawParameterValue("HighCut Freq")->load();
+    settings.peakFreq = apvts.getRawParameterValue("Peak Freq")->load();
+    settings.peakGainInDecibels = apvts.getRawParameterValue("Peak Gain")->load();
+    settings.peakQuality = apvts.getRawParameterValue("Peak Quality")->load();
+    settings.lowCutSlope = static_cast<Slope>(apvts.getRawParameterValue("LowCut Slope")->load());
+    settings.highCutSlope = static_cast<Slope>(apvts.getRawParameterValue("HighCut Slope")->load());
+
+    return settings;
+}
+
+inline Coefficients makePeakFilter(const ChainSettings &chainSettings, double sampleRate) {
+    return juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate,
+                                                               chainSettings.peakFreq,
+                                                               chainSettings.peakQuality,
+                                                               juce::Decibels::decibelsToGain(
+                                                                       chainSettings.peakGainInDecibels));
+}
+
 //==============================================================================
 /**
 */

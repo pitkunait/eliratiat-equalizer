@@ -2,9 +2,17 @@
 
 <JUCERPROJECT id="MAz3BA" name="VashEQ" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              cppLanguageStandard="17">
+              cppLanguageStandard="17" includeBinaryInJuceHeader="1" binaryDataNamespace="BinaryData">
   <MAINGROUP id="khGWax" name="VashEQ">
+    <GROUP id="{8E0C8FE1-5FB7-8C02-B7DF-A6B53A976504}" name="Resources">
+      <FILE id="KhnYvO" name="jura.png" compile="0" resource="1" file="Resources/jura.png"/>
+    </GROUP>
     <GROUP id="{59031FB7-04B0-D1FB-BDAD-8423D3A539F2}" name="Source">
+      <GROUP id="{2F2BF0F8-F279-349B-B68B-EADD7038648D}" name="Components">
+        <FILE id="OSH2oO" name="ResponseCurve.cpp" compile="1" resource="0"
+              file="Source/Components/ResponseCurve.cpp"/>
+        <FILE id="jqL0Gi" name="ResponseCurve.h" compile="0" resource="0" file="Source/Components/ResponseCurve.h"/>
+      </GROUP>
       <FILE id="douLPm" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="Zy1hMg" name="PluginProcessor.h" compile="0" resource="0"

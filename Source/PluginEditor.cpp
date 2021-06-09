@@ -1,15 +1,5 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
-
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-
-
 
 
 //==============================================================================
@@ -36,14 +26,11 @@ VashEQAudioProcessorEditor::~VashEQAudioProcessorEditor() {}
 
 //==============================================================================
 void VashEQAudioProcessorEditor::paint(juce::Graphics &g) {
-    using namespace juce;
-    g.fillAll(Colours::black);
+    juce::Image jura = juce::ImageCache::getFromMemory(BinaryData::jura_png, BinaryData::jura_pngSize);
+    g.drawImageAt(jura, 0, 136);
 }
 
 void VashEQAudioProcessorEditor::resized() {
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
-
     auto bounds = getLocalBounds();
     auto responseArea = bounds.removeFromTop(bounds.getHeight() * 0.33);
     responseCurveComponent.setBounds(responseArea);

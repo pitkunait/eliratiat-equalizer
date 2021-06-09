@@ -29,7 +29,8 @@ public:
 private:
     VashEQAudioProcessor &audioProcessor;
 
-    CustomRotarySlider peakFreqSlider,
+    CustomRotarySlider
+            peakFreqSlider,
             peakGainSlider,
             peakQualitySlider,
             lowCutFreqSlider,
@@ -42,7 +43,8 @@ private:
     using APVTS = juce::AudioProcessorValueTreeState;
     using Attachment = APVTS::SliderAttachment;
 
-    Attachment peakFreqSliderAttachment,
+    Attachment
+            peakFreqSliderAttachment,
             peakGainSliderAttachment,
             peakQualitySliderAttachment,
             lowCutFreqSliderAttachment,
